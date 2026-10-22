@@ -2,451 +2,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090c0a">
-  <title>GameVault | Play More. Live More.</title>
-  <style>
-    :root {
-      --bg: #090c0a;
-      --panel: #111712;
-      --line: #263328;
-      --green: #a9ff52;
-      --text: #f4f7f2;
-      --muted: #9aa79a;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    button, input { font: inherit; }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 18px 5%;
-      background: #090c0af2;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .logo {
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    .logo span, .green { color: var(--green); }
-
-    nav { display: flex; gap: 20px; flex-wrap: wrap; }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    nav a:hover { color: var(--green); }
-
-    .status {
-      color: var(--green);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: auto;
-      padding: 35px 22px 60px;
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 55px 38px;
-      border: 1px solid #30412b;
-      border-radius: 24px;
-      background:
-        radial-gradient(ellipse at 85% 50%, #28521c 0%, transparent 38%),
-        linear-gradient(125deg, #131c12, #0c100d 70%);
-    }
-
-    .eyebrow {
-      color: var(--green);
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 650px;
-      margin: 16px 0;
-      font-size: clamp(38px, 7vw, 70px);
-      line-height: 1.03;
-    }
-
-    .hero p {
-      max-width: 520px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .hero-symbol {
-      position: absolute;
-      right: 7%;
-      top: 18%;
-      font-size: clamp(90px, 18vw, 180px);
-      filter: drop-shadow(0 0 25px #91ff4b55);
-    }
-
-    .button {
-      display: inline-block;
-      padding: 12px 18px;
-      border: 0;
-      border-radius: 10px;
-      background: var(--green);
-      color: #10170b;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .button.secondary {
-      margin-left: 8px;
-      background: #202a20;
-      color: var(--text);
-      border: 1px solid var(--line);
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 24px 0 35px;
-    }
-
-    .stat {
-      padding: 18px;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-
-    .stat strong {
-      display: block;
-      color: var(--green);
-      font-size: 25px;
-    }
-
-    .stat span { color: var(--muted); font-size: 13px; }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin: 35px 0 16px;
-    }
-
-    h2 { margin: 0; font-size: 24px; }
-
-    .search {
-      width: min(100%, 320px);
-      padding: 12px 15px;
-      color: var(--text);
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-    }
-
-    .categories {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-bottom: 20px;
-    }
-
-    .category {
-      padding: 9px 15px;
-      color: var(--muted);
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      cursor: pointer;
-    }
-
-    .category.active, .category:hover {
-      color: var(--green);
-      border-color: var(--green);
-    }
-
-    .games {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .game {
-      overflow: hidden;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .game:hover {
-      transform: translateY(-4px);
-      border-color: #71964d;
-    }
-
-    .game-art {
-      display: grid;
-      min-height: 140px;
-      place-items: center;
-      font-size: 64px;
-      background: radial-gradient(circle, #284329, #111712 70%);
-    }
-
-    .game-body { padding: 15px; }
-
-    .game h3 { margin: 0 0 7px; font-size: 17px; }
-
-    .game p {
-      min-height: 38px;
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .tag {
-      display: inline-block;
-      margin-bottom: 12px;
-      color: var(--green);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .play {
-      width: 100%;
-      padding: 10px;
-      color: var(--green);
-      background: #1b2819;
-      border: 1px solid #34492b;
-      border-radius: 9px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .play:hover { background: #2b4024; }
-
-    .empty {
-      display: none;
-      grid-column: 1 / -1;
-      padding: 30px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .notice {
-      margin-top: 30px;
-      padding: 20px;
-      color: var(--muted);
-      background: #101610;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      line-height: 1.7;
-    }
-
-    footer {
-      padding: 25px;
-      color: var(--muted);
-      text-align: center;
-      border-top: 1px solid var(--line);
-      font-size: 13px;
-    }
-
-    @media (max-width: 850px) {
-      .games { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hero-symbol { right: 3%; top: 10%; opacity: .35; }
-      nav { gap: 12px; }
-    }
-
-    @media (max-width: 520px) {
-      header { flex-wrap: wrap; }
-      nav { order: 3; width: 100%; }
-      main { padding: 22px 14px 40px; }
-      .hero { padding: 35px 22px; }
-      .hero-symbol { top: 12px; right: 10px; opacity: .18; }
-      .stats { gap: 7px; }
-      .stat { padding: 12px 8px; }
-      .stat strong { font-size: 19px; }
-      .stat span { font-size: 11px; }
-      .section-head { align-items: stretch; flex-direction: column; }
-      .search { width: 100%; }
-      .games { gap: 10px; }
-      .game-art { min-height: 105px; font-size: 48px; }
-      .game-body { padding: 11px; }
-      .button.secondary { margin: 10px 0 0; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b0a">
+<title>GameVault — Your Free Gaming Universe</title>
+<meta name="description" content="Discover free browser games, challenge your mind, and beat your high scores with GameVault.">
+<style>
+:root {
+  --bg:#090b0a; --panel:#111512; --panel2:#171d18;
+  --line:#29332b; --green:#b4ff63; --text:#f4f7f3;
+  --muted:#9ba69d; --purple:#9c8cff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+header{height:76px;padding:0 5%;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);
+  background:#090b0af5;position:sticky;top:0;z-index:10}
+.brand{font-size:22px;font-weight:950;letter-spacing:1px}
+.brand span{color:var(--green)}
+.nav{display:flex;align-items:center;gap:25px;color:var(--muted);font-size:14px}
+.nav a:hover{color:var(--green)}
+.header-right{display:flex;align-items:center;gap:10px}
+.online{font-size:12px;color:var(--green)}
+main{max-width:1250px;margin:auto;padding:30px 22px 70px}
+.hero{position:relative;overflow:hidden;min-height:350px;display:flex;
+  align-items:center;border:1px solid #35402f;border-radius:23px;
+  background:linear-gradient(90deg,#101710 0%,#101710f2 40%,#10171022 100%),
+  url("https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=1600&q=85") center/cover}
+.hero-content{position:relative;z-index:1;padding:42px;max-width:650px}
+.eyebrow{color:var(--green);font-size:11px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase}
+h1{font-size:clamp(42px,6.5vw,76px);line-height:.99;
+  letter-spacing:-2.5px;margin:16px 0}
+h1 span{color:var(--green)}
+.hero p{color:#c0c9c0;line-height:1.8;max-width:470px;font-size:15px}
+.primary,.secondary{padding:12px 18px;border-radius:9px;
+  border:1px solid transparent;font-weight:800}
+.primary{background:var(--green);color:#11170b}
+.primary:hover{background:#d0ffa1}
+.secondary{background:#182019;color:var(--text);border-color:#364136}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.section-head{display:flex;align-items:end;justify-content:space-between;
+  gap:18px;margin:36px 0 18px}
+.section-head h2{font-size:25px;margin:0;letter-spacing:-.5px}
+.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.search{width:min(100%,300px);background:var(--panel);color:var(--text);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;outline:none}
+.search:focus,input:focus{border-color:var(--green)}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
+.filter{background:var(--panel);border:1px solid var(--line);color:var(--muted);
+  border-radius:30px;padding:9px 16px;font-size:13px}
+.filter.active,.filter:hover{border-color:var(--green);color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.game{min-width:0;overflow:hidden;border:1px solid var(--line);
+  border-radius:15px;background:var(--panel);transition:.2s}
+.game:hover{transform:translateY(-4px);border-color:#526e40}
+.art{height:165px;position:relative;overflow:hidden;background:#19211a}
+.art img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .35s}
+.game:hover .art img{transform:scale(1.05)}
+.art:after{content:"";position:absolute;inset:45% 0 0;
+  background:linear-gradient(transparent,#111512)}
+.tag{position:absolute;z-index:1;top:12px;left:12px;padding:5px 9px;
+  background:#0b100dcc;border:1px solid #ffffff20;border-radius:20px;
+  font-size:10px;color:var(--green);font-weight:800;text-transform:uppercase}
+.game-info{padding:15px}
+.game-info h3{font-size:17px;margin:0 0 7px}
+.game-info p{color:var(--muted);font-size:12px;line-height:1.6;
+  min-height:38px;margin:0 0 14px}
+.play{width:100%;padding:10px;border-radius:8px;background:#202a20;
+  border:1px solid #354334;color:var(--green);font-weight:800}
+.play:hover{background:#2a3928}
+.empty{display:none;grid-column:1/-1;padding:35px;text-align:center;color:var(--muted)}
+.feature-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.feature{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.feature b{display:block;margin-bottom:6px}
+.feature p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
+footer{border-top:1px solid var(--line);padding:25px 5%;
+  display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;
+  color:var(--muted);font-size:12px}
+footer b{color:var(--green)}
+/* Game window */
+.modal{position:fixed;inset:0;background:#000d;z-index:30;display:none;
+  align-items:center;justify-content:center;padding:15px}
+.modal.open{display:flex}
+.dialog{width:min(100%,540px);max-height:90vh;overflow:auto;
+  padding:24px;background:#101510;border:1px solid #3b4939;border-radius:18px}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dialog h2{margin:0;font-size:23px}
+.close{background:#252d26;border:1px solid var(--line);color:white;
+  border-radius:8px;padding:8px 12px}
+.game-area{padding:18px 0;text-align:center}
+.game-message{color:var(--green);min-height:28px;margin:14px 0}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  max-width:300px;margin:18px auto}
+.cell{aspect-ratio:1;background:#1b241c;border:1px solid #394939;
+  border-radius:12px;color:var(--green);font-size:36px;font-weight:900}
+.cell:disabled{cursor:default}
+.memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  max-width:360px;margin:18px auto}
+.memory-card{aspect-ratio:1;background:#202b21;border:1px solid #40513e;
+  border-radius:10px;color:var(--green);font-size:27px}
+.memory-card.matched{background:#273b25;border-color:var(--green)}
+.rps-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:20px 0}
+.rps-buttons button{font-size:15px}
+.score-line{color:var(--muted);font-size:13px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .art{height:190px}}
+@media(max-width:600px){
+  header{height:auto;min-height:66px;padding:15px 18px;flex-wrap:wrap}
+  .nav{order:3;width:100%;justify-content:space-between;gap:12px}
+  main{padding:20px 14px 45px}
+  .hero{min-height:390px;background-position:58% center}
+  .hero-content{padding:26px 21px}
+  h1{letter-spacing:-1.5px}
+  .section-head{align-items:stretch;flex-direction:column}
+  .search{width:100%}
+  .grid{gap:10px}
+  .art{height:125px}
+  .game-info{padding:11px}
+  .game-info h3{font-size:15px}
+  .game-info p{font-size:11px;min-height:52px}
+  .feature-row{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">GAME<span class="green">VAULT</span></div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#games">All Games</a>
-      <a href="#about">About</a>
-    </nav>
-    <div class="status">● FREE TO PLAY</div>
-  </header>
+<header>
+  <a class="brand" href="#home">GAME<span>VAULT</span></a>
+  <nav class="nav">
+    <a href="#home">Home</a>
+    <a href="#library">Game library</a>
+    <a href="#features">Features</a>
+  </nav>
+  <div class="header-right"><span class="online">FREE TO PLAY</span></div>
+</header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-symbol" aria-hidden="true">🎮</div>
-      <div class="eyebrow">Welcome to your arcade</div>
-      <h1>Play more.<br><span class="green">Live more.</span></h1>
-      <p>
-        Discover your next favourite game. Explore a growing collection
-        of browser games, with offline play being added as the platform grows.
-      </p>
-      <a class="button" href="#games">Explore Games ↓</a>
-      <a class="button secondary" href="#about">Learn More</a>
-    </section>
-
-    <section class="stats" aria-label="Platform features">
-      <div class="stat"><strong id="gameCount">04</strong><span>Game concepts</span></div>
-      <div class="stat"><strong>₹0</strong><span>To start playing</span></div>
-      <div class="stat"><strong>24/7</strong><span>Browse the library</span></div>
-    </section>
-
-    <section id="games">
-      <div class="section-head">
-        <h2>Explore the <span class="green">library.</span></h2>
-        <input class="search" id="search" type="search"
-          placeholder="Search games..." aria-label="Search games">
+<main id="home">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Your next game starts here</div>
+      <h1>Enter the<br><span>GameVault.</span></h1>
+      <p>Discover your next favourite game. Play free browser games, challenge your mind, and try to beat your best score.</p>
+      <div class="actions">
+        <a href="#library" class="primary">Explore games</a>
+        <a href="#features" class="secondary">Discover GameVault</a>
       </div>
+    </div>
+  </section>
 
-      <div class="categories" aria-label="Filter games">
-        <button class="category active" data-category="all">All Games</button>
-        <button class="category" data-category="puzzle">Puzzle</button>
-        <button class="category" data-category="arcade">Arcade</button>
-        <button class="category" data-category="strategy">Strategy</button>
-      </div>
+  <section id="library">
+    <div class="section-head">
+      <div><h2>Game library</h2><p>Pick a game. Jump straight into the action.</p></div>
+      <input id="search" class="search" type="search" placeholder="Search games..." aria-label="Search games">
+    </div>
+    <div class="filters">
+      <button class="filter active" data-filter="all">All games</button>
+      <button class="filter" data-filter="puzzle">Puzzle</button>
+      <button class="filter" data-filter="strategy">Strategy</button>
+      <button class="filter" data-filter="arcade">Arcade</button>
+    </div>
 
-      <div class="games" id="gameGrid">
-        <article class="game" data-name="snake classic" data-category="arcade">
-          <div class="game-art">🐍</div>
-          <div class="game-body">
-            <span class="tag">Arcade</span>
-            <h3>Snake Classic</h3>
-            <p>Guide the snake, collect food and beat your best score.</p>
-            <button class="play" data-game="Snake Classic">Coming next →</button>
-          </div>
-        </article>
+    <div class="grid" id="grid">
+      <article class="game" data-name="tic tac toe noughts crosses" data-category="strategy">
+        <div class="art">
+          <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=700&q=80" alt="Gaming controller on a dark background" loading="lazy">
+          <span class="tag">Strategy</span>
+        </div>
+        <div class="game-info"><h3>Tic-Tac-Toe</h3><p>A classic two-player strategy game. Get three in a row to win.</p>
+          <button class="play" data-play="tic">Play now</button></div>
+      </article>
 
-        <article class="game" data-name="tic tac toe" data-category="strategy">
-          <div class="game-art">⭕</div>
-          <div class="game-body">
-            <span class="tag">Strategy</span>
-            <h3>Tic-Tac-Toe</h3>
-            <p>A timeless battle of X and O. Can you win?</p>
-            <button class="play" data-game="Tic-Tac-Toe">Coming next →</button>
-          </div>
-        </article>
+      <article class="game" data-name="memory match cards brain" data-category="puzzle">
+        <div class="art">
+          <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=700&q=80" alt="Colourful gaming setup" loading="lazy">
+          <span class="tag">Puzzle</span>
+        </div>
+        <div class="game-info"><h3>Memory Match</h3><p>Find the matching pairs and test your memory.</p>
+          <button class="play" data-play="memory">Play now</button></div>
+      </article>
 
-        <article class="game" data-name="memory match cards" data-category="puzzle">
-          <div class="game-art">🧠</div>
-          <div class="game-body">
-            <span class="tag">Puzzle</span>
-            <h3>Memory Match</h3>
-            <p>Flip the cards and find all matching pairs.</p>
-            <button class="play" data-game="Memory Match">Coming next →</button>
-          </div>
-        </article>
+      <article class="game" data-name="rock paper scissors classic" data-category="arcade">
+        <div class="art">
+          <img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=700&q=80" alt="Video game controller and gaming equipment" loading="lazy">
+          <span class="tag">Arcade</span>
+        </div>
+        <div class="game-info"><h3>Rock Paper Scissors</h3><p>Challenge the computer and win the best of five.</p>
+          <button class="play" data-play="rps">Play now</button></div>
+      </article>
 
-        <article class="game" data-name="rock paper scissors" data-category="arcade">
-          <div class="game-art">✊</div>
-          <div class="game-body">
-            <span class="tag">Arcade</span>
-            <h3>Rock Paper Scissors</h3>
-            <p>Challenge the computer in this classic game.</p>
-            <button class="play" data-game="Rock Paper Scissors">Coming next →</button>
-          </div>
-        </article>
+      <article class="game" data-name="snake arcade classic" data-category="arcade">
+        <div class="art">
+          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80" alt="Gaming arena and computer screens" loading="lazy">
+          <span class="tag">Arcade</span>
+        </div>
+        <div class="game-info"><h3>Snake Classic</h3><p>Collect food, grow longer, and avoid crashing.</p>
+          <button class="play" data-play="snake">Play now</button></div>
+      </article>
 
-        <div class="empty" id="empty">No games match your search.</div>
-      </div>
-    </section>
+      <div class="empty" id="empty">No games found. Try another search.</div>
+    </div>
+  </section>
 
-    <section class="notice" id="about">
-      <strong class="green">The GameVault mission</strong><br>
-      A free gaming space built for curious players. We're starting small,
-      testing every feature, and adding original games step by step.
-      Offline play will be available for supported games after they have
-      been cached on your device.
-    </section>
-  </main>
+  <section id="features">
+    <div class="section-head"><div><h2>Built for players</h2><p>A simple gaming space that can grow with you.</p></div></div>
+    <div class="feature-row">
+      <div class="feature"><b>Free to play</b><p>These original mini-games run in your browser without a paid game account.</p></div>
+      <div class="feature"><b>Responsive design</b><p>Explore the library on laptop, tablet, or mobile screen.</p></div>
+      <div class="feature"><b>Offline-ready roadmap</b><p>We will add offline caching and local score saving in the next development stages.</p></div>
+    </div>
+  </section>
+</main>
 
-  <footer>GAMEVAULT · A student-built gaming project</footer>
+<footer><span><b>GAMEVAULT</b> — Your free gaming universe.</span><span>Independent student project.</span></footer>
 
-  <script>
-    const search = document.getElementById("search");
-    const cards = [...document.querySelectorAll(".game")];
-    const categoryButtons = [...document.querySelectorAll(".category")];
-    const empty = document.getElementById("empty");
-    let selectedCategory = "all";
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="dialog">
+    <div class="dialog-top"><h2 id="modalTitle">Game</h2><button class="close" id="close">Close</button></div>
+    <div class="game-area" id="gameArea"></div>
+  </div>
+</div>
 
-    function filterGames() {
-      const query = search.value.trim().toLowerCase();
-      let visible = 0;
+<script>
+const $ = id => document.getElementById(id);
+const cards = [...document.querySelectorAll(".game")];
+const filterButtons = [...document.querySelectorAll(".filter")];
+let category = "all";
 
-      cards.forEach(card => {
-        const matchesName = card.dataset.name.includes(query);
-        const matchesCategory =
-          selectedCategory === "all" ||
-          card.dataset.category === selectedCategory;
-        const show = matchesName && matchesCategory;
+function filterGames() {
+  const query = $("search").value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(card => {
+    const matchName = card.dataset.name.includes(query);
+    const matchCategory = category === "all" || card.dataset.category === category;
+    const visible = matchName && matchCategory;
+    card.style.display = visible ? "" : "none";
+    if (visible) shown++;
+  });
+  $("empty").style.display = shown ? "none" : "block";
+}
+$("search").addEventListener("input", filterGames);
+filterButtons.forEach(btn => btn.addEventListener("click", () => {
+  category = btn.dataset.filter;
+  filterButtons.forEach(b => b.classList.toggle("active", b === btn));
+  filterGames();
+}));
 
-        card.style.display = show ? "" : "none";
-        if (show) visible++;
+const modal = $("modal"), area = $("gameArea");
+let cleanupGame = () => {};
+function openGame(title, html, init) {
+  cleanupGame();
+  $("modalTitle").textContent = title;
+  area.innerHTML = html;
+  modal.classList.add("open");
+  cleanupGame = init();
+}
+function closeGame() {
+  modal.classList.remove("open");
+  cleanupGame();
+}
+$("close").addEventListener("click", closeGame);
+modal.addEventListener("click", e => { if (e.target === modal) closeGame(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeGame();
+});
+
+function ticTacToe() {
+  openGame("Tic-Tac-Toe", `
+    <p class="score-line">Take turns with a friend. First to make a line wins.</p>
+    <div class="board" id="ticBoard"></div>
+    <div class="game-message" id="ticMessage">X plays first.</div>
+    <button class="primary" id="ticReset">New round</button>
+  `, () => {
+    const board = $("ticBoard"), message = $("ticMessage");
+    let cells = Array(9).fill(""), turn = "X", over = false;
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    function draw() {
+      board.replaceChildren();
+      cells.forEach((value, i) => {
+        const b = document.createElement("button");
+        b.className = "cell"; b.textContent = value;
+        b.setAttribute("aria-label", "Cell " + (i+1) + (value ? ": " + value : ""));
+        b.disabled = !!value || over;
+        b.addEventListener("click", () => {
+          if (over || cells[i]) return;
+          cells[i] = turn;
+          const win = wins.some(line => line.every(index => cells[index] === turn));
+          if (win) { over = true; message.textContent = turn + " wins!"; }
+          else if (cells.every(Boolean)) { over = true; message.textContent = "It's a draw."; }
+          else { turn = turn === "X" ? "O" : "X"; message.textContent = turn + "'s turn."; }
+          draw();
+        });
+        board.append(b);
       });
-
-      empty.style.display = visible ? "none" : "block";
     }
-
-    search.addEventListener("input", filterGames);
-
-    categoryButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        selectedCategory = button.dataset.category;
-        categoryButtons.forEach(item =>
-          item.classList.toggle("active", item === button)
-        );
-        filterGames();
-      });
+    $("ticReset").addEventListener("click", () => {
+      cells = Array(9).fill(""); turn = "X"; over = false;
+      message.textContent = "X plays first."; draw();
     });
+    draw();
+    return () => {};
+  });
+}
 
-    document.querySelectorAll(".play").forEach(button => {
-      button.addEventListener("click", () => {
-        alert(button.dataset.game +
-          " is planned for the next development stage. Stay tuned!");
+function memoryGame() {
+  openGame("Memory Match", `
+    <p class="score-line">Find all eight matching pairs in as few moves as possible.</p>
+    <p class="score-line" id="memoryScore">Moves: 0</p>
+    <div class="memory-board" id="memoryBoard"></div>
+    <div class="game-message" id="memoryMessage">Find your first pair.</div>
+    <button class="primary" id="memoryReset">Shuffle and restart</button>
+  `, () => {
+    const symbols = ["◆","●","▲","★","♥","■","✦","⬟"];
+    let deck = [], first = null, lock = false, moves = 0, matches = 0, timer = null;
+    const board = $("memoryBoard"), message = $("memoryMessage");
+    function shuffle() {
+      deck = [...symbols, ...symbols].sort(() => Math.random() - .5)
+        .map((symbol, id) => ({symbol, id, revealed:false, matched:false}));
+      first = null; lock = false; moves = 0; matches = 0;
+      $("memoryScore").textContent = "Moves: 0";
+      message.textContent = "Find your first pair.";
+      draw();
+    }
+    function draw() {
+      board.replaceChildren();
+      deck.forEach(card => {
+        const b = document.createElement("button");
+        b.className = "memory-card" + (card.matched ? " matched" : "");
+        b.textContent = card.revealed || card.matched ? card.symbol : "?";
+        b.setAttribute("aria-label", card.revealed || card.matched ? card.symbol : "Hidden card");
+        b.addEventListener("click", () => {
+          if (lock || card.revealed || card.matched) return;
+          card.revealed = true;
+          if (!first) { first = card; draw(); return; }
+          moves++;
+          $("memoryScore").textContent = "Moves: " + moves;
+          if (first.symbol === card.symbol) {
+            first.matched = true; card.matched = true; first = null; matches++;
+            if (matches === symbols.length) message.textContent = "You matched every pair in " + moves + " moves!";
+            draw();
+          } else {
+            lock = true; draw();
+            timer = setTimeout(() => {
+              first.revealed = false; card.revealed = false;
+              first = null; lock = false; draw();
+            }, 750);
+          }
+        });
+        board.append(b);
       });
-    });
-  </script>
+    }
+    $("memoryReset").addEventListener("click", shuffle);
+    shuffle();
+    return () => clearTimeout(timer);
+  });
+}
+
+function rpsGame() {
+  openGame("Rock Paper Scissors", `
+    <p class="score-line">First player to three wins takes the match.</p>
+    <div class="game-message" id="rpsMessage">Choose your move.</div>
+    <p id="rpsScore">You 0 — 0 Computer</p>
+    <div class="rps-buttons">
+      <button class="primary" data-move="Rock">Rock</button>
+      <button class="primary" data-move="Paper">Paper</button>
+      <button class="primary" data-move="Scissors">Scissors</button>
+    </div>
+    <button class="secondary" id="rpsReset">Reset match</button>
+  `, () => {
+    let you = 0, cpu = 0, over = false;
+    const choices = ["Rock","Paper","Scissors"];
+    function reset() {
+      you = 0; cpu = 0; over = false;
+      $("rpsMessage").textContent = "Choose your move.";
+      $("rpsScore").textContent = "You 0 — 0 Computer";
+    }
+    area.querySelectorAll("[data-move]").forEach(btn => btn.addEventListener("click", () => {
+      if (over) return;
+      const player = btn.dataset.move;
+      const computer = choices[Math.floor(Math.random()*3)];
+      let result = player === computer ? "It's a draw." :
+        ((player === "Rock" && computer === "Scissors") ||
+         (player === "Paper" && computer === "Rock") ||
+         (player === "Scissors" && computer === "Paper")) ? "You win this round." : "Computer wins this round.";
+      if (player !== computer) {
+        if (result.startsWith("You")) you++; else cpu++;
+      }
+      $("rpsMessage").textContent = "You chose " + player + ". Computer chose " + computer + ". " + result;
+      $("rpsScore").textContent = "You " + you + " — " + cpu + " Computer";
+      if (you >= 3 || cpu >= 3) {
+        over = true;
+        $("rpsMessage").textContent += you >= 3 ? " You win the match!" : " Computer wins the match!";
+      }
+    }));
+    $("rpsReset").addEventListener("click", reset);
+    return () => {};
+  });
+}
+
+function snakeGame() {
+  openGame("Snake Classic", `
+    <p class="score-line">Use arrow keys or WASD. On a phone, use the directional buttons.</p>
+    <canvas id="snakeCanvas" width="320" height="320" style="width:min(100%,320px);background:#0a100b;border:1px solid #3b5037;border-radius:10px"></canvas>
+    <p class="game-message" id="snakeScore">Score: 0</p>
+    <div style="display:grid;grid-template-columns:repeat(3,55px);justify-content:center;gap:5px">
+      <span></span><button class="secondary" data-dir="up">Up</button><span></span>
+      <button class="secondary" data-dir="left">Left</button>
+      <button class="secondary" data-dir="down">Down</button>
+      <button class="secondary" data-dir="right">Right</button>
+    </div>
+    <p><button class="primary" id="snakeReset">Restart</button></p>
+  `, () => {
+    const canvas = $("snakeCanvas"), ctx = canvas.getContext("2d");
+    const size = 16, total = 20;
+    let snake, food, dx, dy, score, timer, over;
+    function placeFood() {
+      do { food = {x:Math.floor(Math.random()*total),y:Math.floor(Math.random()*total)}; }
+      while (snake.some(p => p.x === food.x && p.y === food.y));
+    }
+    function reset() {
+      clearInterval(timer); snake = [{x:8,y:10},{x:7,y:10},{x:6,y:10}];
+      dx=1; dy=0; score=0; over=false; placeFood(); draw();
+      $("snakeScore").textContent = "Score: 0";
+      timer = setInterval(tick, 125);
+    }
+    function draw() {
+      ctx.fillStyle = "#0a100b"; ctx.fillRect(0,0,320,320);
+      ctx.fillStyle = "#b4ff63"; ctx.fillRect(food.x*size+3,food.y*size+3,10,10);
+      snake.forEach((p,i) => {
+        ctx.fillStyle = i === 0 ? "#d5ffae" : "#7dc844";
+        ctx.fillRect(p.x*size+1,p.y*size+1,size-2,size-2);
+      });
+      if (over) {
+        ctx.fillStyle = "#000b"; ctx.fillRect(0,130,320,60);
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 18px sans-serif";
+        ctx.textAlign = "center"; ctx.fillText("Game over — restart to play",160,165);
+      }
+    }
+    function tick() {
+      const head = {x:snake[0].x+dx,y:snake[0].y+dy};
+      if (head.x<0 || head.x>=total || head.y<0 || head.y>=total ||
+          snake.some(p => p.x===head.x && p.y===head.y)) {
+        over=true; clearInterval(timer); draw(); return;
+      }
+      snake.unshift(head);
+      if (head.x===food.x && head.y===food.y) {
+        score+=1; $("snakeScore").textContent = "Score: " + score; placeFood();
+      } else snake.pop();
+      draw();
+    }
+    function direction(dir) {
+      if (dir==="up" && dy!==1) {dx=0;dy=-1}
+      if (dir==="down" && dy!==-1) {dx=0;dy=1}
+      if (dir==="left" && dx!==1) {dx=-1;dy=0}
+      if (dir==="right" && dx!==-1) {dx=1;dy=0}
+    }
+    function key(e) {
+      const k = e.key.toLowerCase();
+      const map = {arrowup:"up",w:"up",arrowdown:"down",s:"down",
+        arrowleft:"left",a:"left",arrowright:"right",d:"right"};
+      if (map[k]) { e.preventDefault(); direction(map[k]); }
+    }
+    document.addEventListener("keydown",key);
+    area.querySelectorAll("[data-dir]").forEach(b => b.addEventListener("click",()=>direction(b.dataset.dir)));
+    $("snakeReset").addEventListener("click",reset);
+    reset();
+    return () => { clearInterval(timer); document.removeEventListener("keydown",key); };
+  });
+}
+
+document.querySelectorAll("[data-play]").forEach(btn => btn.addEventListener("click", () => {
+  const games = {tic:ticTacToe, memory:memoryGame, rps:rpsGame, snake:snakeGame};
+  games[btn.dataset.play]();
+}));
+</script>
 </body>
 </html>
